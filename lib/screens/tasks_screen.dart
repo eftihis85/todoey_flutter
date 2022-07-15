@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todoey_flutter/widgets/task_list.dart';
 
 class TaskScreen extends StatelessWidget {
   @override
@@ -17,7 +18,7 @@ class TaskScreen extends StatelessWidget {
             padding: EdgeInsets.only(top: 60, left: 30, right: 30, bottom: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: const <Widget>[
                 CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 30,
@@ -25,10 +26,10 @@ class TaskScreen extends StatelessWidget {
                       Icons.list,
                       color: Colors.lightBlue,
                     )),
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
-                const Text(
+                Text(
                   'Todoey',
                   style: TextStyle(
                       color: Colors.white,
@@ -47,11 +48,15 @@ class TaskScreen extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20)))),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: TasksList(),
+            ),
           ),
         ],
       ),
