@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:todoey_flutter/models/task_data.dart';
 import 'package:todoey_flutter/widgets/task_list.dart';
 import 'package:todoey_flutter/screens/add_task_screen.dart';
 import 'package:todoey_flutter/models/task.dart';
+
+import 'package:provider/provider.dart';
+import 'package:todoey_flutter/models/task_data.dart';
 
 class TaskScreen extends StatefulWidget {
   @override
@@ -11,11 +15,6 @@ class TaskScreen extends StatefulWidget {
 
 class _TaskScreenState extends State<TaskScreen> {
   // Widget buildBottomSheet(BuildContext context) => Container(
-  List<Task> tasks = [
-    Task(name: 'Buy milk'),
-    Task(name: 'Buy bread'),
-    Task(name: 'Buy eggs'),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -26,21 +25,24 @@ class _TaskScreenState extends State<TaskScreen> {
         child: Icon(Icons.add),
         onPressed: () {
           showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              builder: (context) => SingleChildScrollView(
-                  child: Container(
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: AddTaskScreen(
-                        addTaskCallBack: (t) {
-                          print(t);
-                          setState(() {
-                            tasks.add(Task(name: t));
-                          });
-                          Navigator.pop(context);
-                        },
-                      ))));
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: AddTaskScreen(
+                  addTaskCallBack: (t) {
+                    print(t);
+                    setState(() {
+                      Provider.of<TaskData>(context, listen: false).addTask(t);
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ),
+          );
         },
       ),
       body: Column(
@@ -69,7 +71,7 @@ class _TaskScreenState extends State<TaskScreen> {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '${tasks.length} Tasks',
+                  '${Provider.of<TaskData>(context).taskCount} Tasks',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -87,9 +89,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: TasksList(
-                tasks: tasks,
-              ),
+              child: TasksList(),
             ),
           ),
         ],
